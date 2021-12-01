@@ -9,31 +9,35 @@ set(CMAKE_CXX_STANDARD_REQUIRED     ON)
 set(CMAKE_CXX_EXTENSIONS            OFF)
 set(CMAKE_EXPORT_COMPILE_COMMANDS   ON)
 
+## Fetch the content of the repository ##
+# set variables
 include(FetchContent)
 
-# Fetch the content of the repository
+set(GITHUB_PREFIX "https://github.com")
 
-set(RPC_NAME "rpc")
+set(RPC_LIBRARY_NAME "rpc")
+set(RPC_LIBRARY_PATH "rpclib/rpclib")
+
+set(JSON_LIBRARY_NAME "nlohmann_json")
+set(JSON_LIBRARY_PATH "nlohmann/json")
+
+# do fetch operation
+message(STATUS "Fetching ${RPC_LIBRARY_NAME} library")
 FetchContent_Declare(
-    ${RPC_NAME}
-    GIT_REPOSITORY "https://github.com/rpclib/rpclib.git"
+    ${RPC_LIBRARY_NAME}
+    GIT_REPOSITORY "${GITHUB_PREFIX}/${RPC_LIBRARY_PATH}.git"
     GIT_TAG "master"
 )
 
-# set(BOOST_NAME "boost")
-# FetchContent_Declare(
-#     ${BOOST_NAME}
-#     GIT_REPOSITORY "https://github.com/boostorg/boost.git"
-#     GIT_TAG "master"
-# )
-
-set(JSON_NAME "nlohmann_json")
+message(STATUS "Fetching ${JSON_LIBRARY_NAME} library")
 FetchContent_Declare(
-    ${JSON_NAME}
-    GIT_REPOSITORY "https://github.com/nlohmann/json.git"
+    ${JSON_LIBRARY_NAME}
+    GIT_REPOSITORY "${GITHUB_PREFIX}/${JSON_LIBRARY_PATH}.git"
     GIT_TAG "master"
 )
 
+message(STATUS "Populating project with variables of the following: ${RPC_NAME} ${JSON_NAME}")
 FetchContent_MakeAvailable(${RPC_NAME} ${JSON_NAME})
 
+# Subdirectories
 add_subdirectory(client)

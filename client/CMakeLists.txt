@@ -4,5 +4,5 @@ add_executable(${PROJECT} main.cpp)
 target_link_libraries(${PROJECT} Threads::Threads)
 
 # fetch content libraries
-target_link_libraries(${PROJECT} ${RPC_NAME})
-target_link_libraries(${PROJECT} ${JSON_NAME})
+target_link_libraries(${PROJECT} ${RPC_LIBRARY_NAME})
+target_link_libraries(${PROJECT} ${JSON_LIBRARY_NAME})
