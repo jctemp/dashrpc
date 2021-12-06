@@ -1,22 +1,31 @@
+#include "fmt/color.h"
+#include "fmt/core.h"
+
+#include "nlohmann/json.hpp"
+
+#include "grpcpp/grpcpp.h"
+
+#include <fstream>
+
 #include "dashrpc.hpp"
 
-#include "fmt/core.h"
-#include "grpc/grpc.h"
-
-#include "grpcpp/channel.h"
-#include "grpcpp/client_context.h"
-#include "grpcpp/security/authorization_policy_provider.h"
-#include "grpcpp/security/credentials.h"
-
-bool test_function(void)
+nlohmann::json read_json(std::string const &path)
 {
-    fmt::print("THIS IS A TEST FUNCTION");
-    return true;
+    std::ifstream json_file{path};
+    nlohmann::json json_text{};
+    if (json_file.is_open())
+    {
+        json_file >> json_text;
+        json_file.close();
+    }
+    else
+    {
+        throw std::logic_error{"File cannot be opened at the specifed location."};
+    }
+    return json_text;
 }
 
-
-void grpc_test(void)
+std::string grpc_version(void)
 {
-    grpc::ChannelArguments test{};
-    grpc::CreateCustomChannel("localhost:20002", grpc::InsecureChannelCredentials(), test);
+    return grpc::Version();
 }
