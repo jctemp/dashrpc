@@ -7,7 +7,6 @@ set(DASHRPC_INCLUDES "${PROJECT_SOURCE_DIR}/include/")
 add_library(${LIB_DASHRPC} ${DASHRPC_SOURCES} ${DASHRPC_HEADER})
 target_include_directories(${LIB_DASHRPC} PUBLIC ${DASHRPC_INCLUDES})
 
-target_link_libraries(${LIB_DASHRPC} PUBLIC ${CONAN_LIBS_GRPC})
 target_link_libraries(${LIB_DASHRPC} PUBLIC ${CONAN_LIBS_FMT})
-
-target_compile_features(${LIB_DASHRPC} PUBLIC cxx_std_17)
+target_link_libraries(${LIB_DASHRPC} PUBLIC ${CONAN_LIBS_GRPC})
+target_link_libraries(${LIB_DASHRPC} PUBLIC ${CONAN_LIBS_NLOHMANN_JSON})
