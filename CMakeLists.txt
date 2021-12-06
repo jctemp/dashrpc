@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.18)
 
-set(PROJECT "dash_client")
+set(PROJECT "dash_wrapper")
 project("${PROJECT}" VERSION 0.1.0 LANGUAGES CXX)
 
 # Global CMake variables are set here
@@ -9,35 +9,33 @@ set(CMAKE_CXX_STANDARD_REQUIRED     ON)
 set(CMAKE_CXX_EXTENSIONS            OFF)
 set(CMAKE_EXPORT_COMPILE_COMMANDS   ON)
 
-## Fetch the content of the repository ##
-# set variables
-include(FetchContent)
+# Options
+option(ENABLE_TESTING "Enable a Unit Testing build." ON)
 
-set(GITHUB_PREFIX "https://github.com")
+# Cmake modules
+set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake/)
 
-set(RPC_LIBRARY_NAME "rpc")
-set(RPC_LIBRARY_PATH "rpclib/rpclib")
+if (ENABLE_TESTING)
+    include(CTest)
+endif()
 
-set(JSON_LIBRARY_NAME "nlohmann_json")
-set(JSON_LIBRARY_PATH "nlohmann/json")
+# Project
+set(EXECUTABLE_NAME "${PROJECT}_Executable")
+set(TEST_MAIN       "${PROJECT}_unit_tests")
 
-# do fetch operation
-message(STATUS "Fetching ${RPC_LIBRARY_NAME} library")
-FetchContent_Declare(
-    ${RPC_LIBRARY_NAME}
-    GIT_REPOSITORY "${GITHUB_PREFIX}/${RPC_LIBRARY_PATH}.git"
-    GIT_TAG "master"
-)
+# Library
+set(LIB_DASHRPC "libdashrpc")
 
-message(STATUS "Fetching ${JSON_LIBRARY_NAME} library")
-FetchContent_Declare(
-    ${JSON_LIBRARY_NAME}
-    GIT_REPOSITORY "${GITHUB_PREFIX}/${JSON_LIBRARY_PATH}.git"
-    GIT_TAG "master"
-)
 
-message(STATUS "Populating project with variables of the following: ${RPC_NAME} ${JSON_NAME}")
-FetchContent_MakeAvailable(${RPC_NAME} ${JSON_NAME})
+# Add conan libraries
+include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
+conan_basic_setup()
 
-# Subdirectories
-add_subdirectory(client)
+# Add subdirectories
+add_subdirectory(src)
+
+# Add unit tests
+if (ENABLE_TESTING OR ENABLE_COVERAGE)
+    enable_testing()
+    add_subdirectory(tests)
+endif()
