@@ -1,8 +1,9 @@
 [requires]
 catch2/2.13.7
 celero/2.8.2
-grpc/1.39.1
 fmt/8.0.1
+grpc/1.39.1
+nlohmann_json/3.10.4
 
 [generators]
 cmake

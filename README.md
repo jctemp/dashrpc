@@ -14,6 +14,10 @@ sudo apt install doxygen
 pip install conan
 conan user
 
+# std::string abi problems due to highter cpp standard
+# -> nano ~/.conan/profiles/default
+# -> compiler.libcxx=libstdc++11
+
 # prepare (top-level folder)
 rm -rf build
 mkdir build
