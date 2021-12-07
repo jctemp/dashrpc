@@ -29,3 +29,7 @@ std::string grpc_version(void)
 {
     return grpc::Version();
 }
+
+void grpc_dash_layer(void)
+{
+}

@@ -3,16 +3,21 @@
 #include <string>
 
 #include "catch2/catch.hpp"
+
 #include "fmt/color.h"
 #include "fmt/core.h"
+
+#include "grpcpp/grpcpp.h"
+
 #include "nlohmann/json.hpp"
+
 
 #include "dashrpc.hpp"
 
 TEST_CASE("TEXT TO JSON", "libdashrpc")
 {
     SECTION("EXCEPTION HANDLING")
-        REQUIRE_THROWS_AS(read_json(""), std::logic_error);
+    REQUIRE_THROWS_AS(read_json(""), std::logic_error);
 
     SECTION("SIMPLE JSON OBJECT")
     {
@@ -34,5 +39,15 @@ TEST_CASE("GRPC COMMANDS", "libdashrpc")
     {
         std::string version{grpc_version()};
         REQUIRE(version.size() > 0);
+    }
+
+    SECTION("GRPC LAYER 1 CALL")
+    {
+    }
+
+    SECTION("GRPC LAYER 2 CALL")
+    {
+        // connection possible
+        grpc_dash_layer();
     }
 }

@@ -26,7 +26,6 @@ set(TEST_MAIN       "${PROJECT}_unit_tests")
 # Library
 set(LIB_DASHRPC "libdashrpc")
 
-
 # Add conan libraries
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup()
