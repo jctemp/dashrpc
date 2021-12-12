@@ -1,4 +1,16 @@
-#pragma once
+/*
+   ___  ___   ______ _____  ___  _____
+  / _ \/ _ | / __/ // / _ \/ _ \/ ___/   Dash RPC Wrapper
+ / // / __ |_\ \/ _  / , _/ ___/ /__     version 0.0.0
+/____/_/ |_/___/_//_/_/|_/_/   \___/     https://github.com/jamie-prog/dashrpc
+
+ */
+
+#ifndef INCLUDE_PROG_DASHRPC_HPP_
+#define INCLUDE_DASHRPC_HPP_
+
+namespace dashrpc
+{
 
 /**
  * @brief Reads from a json file and create a nlohmann::json object
@@ -19,3 +31,7 @@ nlohmann::json read_json(std::string const &path);
 std::string grpc_version(void);
 
 void grpc_dash_layer(void);
+
+} // namespace dashrpc
+
+#endif // INCLUDE_DASHRPC_HPP_

@@ -1,36 +1,47 @@
 # SETUP FOR DEPENDENCIES OF THE DASH GRPC AND CPP FILES
 set(DASH_PROTOS_DIR "${PROJECT_SOURCE_DIR}/src/protos")
 
-set(LIB_DEPS _core_grpc_deps _core_cpp_deps _platform_grpc_deps _platform_cpp_deps)
+set(PROTOC "${CONAN_BIN_DIRS_PROTOBUF}/protoc")
+set(GRPC_PLUGIN "${CONAN_BIN_DIRS_GRPC}/grpc_cpp_plugin")
+
+set(CORE_NAME "core.proto")
+set(PLATFORM_NAME "platform.proto")
+
+set(LIB_DEPS
+    "_core_grpc_deps"
+    "_core_cpp_deps"
+    "_platform_grpc_deps"
+    "_platform_cpp_deps"
+)
 
 add_custom_target(_core_grpc_deps
-    ${CONAN_BIN_DIRS_PROTOBUF}/protoc
+    ${PROTOC}
         -I ${DASH_PROTOS_DIR}
         --grpc_out=${DASH_PROTOS_DIR}
-        --plugin=protoc-gen-grpc=${CONAN_BIN_DIRS_GRPC}/grpc_cpp_plugin
-        ${DASH_PROTOS_DIR}/core.proto
+        --plugin=protoc-gen-grpc=${GRPC_PLUGIN}
+        ${DASH_PROTOS_DIR}/${CORE_NAME}
 )
 
 add_custom_target(_core_cpp_deps
-    ${CONAN_BIN_DIRS_PROTOBUF}/protoc
+    ${PROTOC}
         -I ${DASH_PROTOS_DIR}
         --cpp_out=${DASH_PROTOS_DIR}
-        ${DASH_PROTOS_DIR}/core.proto
+        ${DASH_PROTOS_DIR}/${CORE_NAME}
 )
 
 add_custom_target(_platform_grpc_deps
-    ${CONAN_BIN_DIRS_PROTOBUF}/protoc
+    ${PROTOC}
         -I ${DASH_PROTOS_DIR}
         --grpc_out=${DASH_PROTOS_DIR}
-        --plugin=protoc-gen-grpc=${CONAN_BIN_DIRS_GRPC}/grpc_cpp_plugin
-        ${DASH_PROTOS_DIR}/platform.proto
+        --plugin=protoc-gen-grpc=${GRPC_PLUGIN}
+        ${DASH_PROTOS_DIR}/${PLATFORM_NAME}
 )
 
 add_custom_target(_platform_cpp_deps
-    ${CONAN_BIN_DIRS_PROTOBUF}/protoc
+    ${PROTOC}
         -I ${DASH_PROTOS_DIR}
         --cpp_out=${DASH_PROTOS_DIR}
-        ${DASH_PROTOS_DIR}/platform.proto
+        ${DASH_PROTOS_DIR}/${PLATFORM_NAME}
 )
 
 set(DASH_CORE_SOURCE "${DASH_PROTOS_DIR}/core.grpc.pb.cc" "${DASH_PROTOS_DIR}/core.pb.cc")
