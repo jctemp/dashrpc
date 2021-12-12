@@ -2,7 +2,7 @@
 set(TEST_SOURCES "main.cpp")
 
 # Executable
-add_executable(${TEST_MAIN} ${TEST_SOURCES})
+add_executable(${TEST_MAIN} ${TEST_SOURCES} ${CONFIG_HEADER})
 
 # Settings
 target_link_libraries(${TEST_MAIN} ${LIB_DASHRPC})

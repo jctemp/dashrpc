@@ -1,16 +1,14 @@
 #define CATCH_CONFIG_MAIN
 
+#include "jsonfile.h"
+
 #include <string>
 
 #include "catch2/catch.hpp"
-
 #include "fmt/color.h"
 #include "fmt/core.h"
-
 #include "grpcpp/grpcpp.h"
-
 #include "nlohmann/json.hpp"
-
 
 #include "dashrpc.hpp"
 
@@ -21,7 +19,7 @@ TEST_CASE("TEXT TO JSON", "libdashrpc")
 
     SECTION("SIMPLE JSON OBJECT")
     {
-        auto path{std::string{"/mnt/d/GIT_REPOSITORIES/dash_client/tests/json_files/test0.json"}};
+        auto path{std::string{JSON_FILES_DIR "/test0.json"}};
 
         nlohmann::json json_text{{}};
         json_text = read_json(path);
