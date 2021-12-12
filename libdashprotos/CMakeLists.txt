@@ -1,5 +1,5 @@
 # SETUP FOR DEPENDENCIES OF THE DASH GRPC AND CPP FILES
-set(DASH_PROTOS_DIR "${PROJECT_SOURCE_DIR}/dashprotos")
+set(DASH_PROTOS_DIR "${PROJECT_SOURCE_DIR}/libdashprotos")
 
 set(PROTOC "${CONAN_BIN_DIRS_PROTOBUF}/protoc")
 set(GRPC_PLUGIN "${CONAN_BIN_DIRS_GRPC}/grpc_cpp_plugin")
@@ -52,8 +52,8 @@ set(DASH_PLATFORM_SOURCE "${DASH_PROTOS_DIR}/platform.grpc.pb.cc" "${DASH_PROTOS
 set(DASH_PLATFORM_HEADER "${DASH_PROTOS_DIR}/platform.grpc.pb.h" "${DASH_PROTOS_DIR}/platform.pb.h")
 
 # GRPC TARGET
-add_library(${LIB_DASHGRPC}
+add_library(${LIB_DASHPROTOS}
     ${DASH_CORE_SOURCE} ${DASH_CORE_HEADER}
     ${DASH_PLATFORM_SOURCE} ${DASH_PLATFORM_HEADER}
 )
-add_dependencies(${LIB_DASHGRPC} ${LIB_DEPS})
+add_dependencies(${LIB_DASHPROTOS} ${LIB_DEPS})

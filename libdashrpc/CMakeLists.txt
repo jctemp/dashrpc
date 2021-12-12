@@ -1,4 +1,4 @@
-set(LIBDASHRPC_DIR "${PROJECT_SOURCE_DIR}/dashrpc")
+set(LIBDASHRPC_DIR "${PROJECT_SOURCE_DIR}/libdashrpc")
 
 # DASHRPC SOURCE AND HEADERS
 set(DASHRPC_SOURCES  "${LIBDASHRPC_DIR}/dashrpc.cpp")
@@ -7,10 +7,10 @@ set(DASHRPC_INCLUDES "${LIBDASHRPC_DIR}/include/")
 
 # DEFINE LIBRPC AS A TARGET
 add_library(${LIB_DASHRPC} ${DASHRPC_SOURCES} ${DASHRPC_HEADER})
-add_dependencies(${LIB_DASHRPC} ${LIB_DASHGRPC})
+add_dependencies(${LIB_DASHRPC} ${LIB_DASHPROTOS})
 
 target_include_directories(${LIB_DASHRPC} PUBLIC ${DASHRPC_INCLUDES})
-target_link_libraries(${LIB_DASHRPC} PRIVATE ${LIB_DASHGRPC})
+target_link_libraries(${LIB_DASHRPC} PRIVATE ${LIB_DASHPROTOS})
 target_link_libraries(${LIB_DASHRPC} PRIVATE ${CONAN_LIBS_FMT})
 target_link_libraries(${LIB_DASHRPC} PRIVATE ${CONAN_LIBS_GRPC})
 target_link_libraries(${LIB_DASHRPC} PRIVATE ${CONAN_LIBS_NLOHMANN_JSON})

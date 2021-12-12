@@ -30,12 +30,6 @@ cd build && conan install .. && cd ..
 cd build && cmake .. && cmake --build .
 ```
 
-## CMAKE EXPLAINED
-
-```cmake
-
-```
-
 ## CONAN EXPLAINED
 
 ```txt

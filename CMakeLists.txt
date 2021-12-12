@@ -21,11 +21,11 @@ set(EXECUTABLE_NAME "${PROJECT}_Executable")
 set(TEST_MAIN       "${PROJECT}_unit_tests")
 
 # LIBRARY AND SUBDIRECTORY
-set(LIB_DASHGRPC "libdashgrpc")
+set(LIB_DASHPROTOS "libdashprotos")
 set(LIB_DASHRPC  "libdashrpc")
 
-add_subdirectory(dashprotos)
-add_subdirectory(dashrpc)
+add_subdirectory(libdashprotos)
+add_subdirectory(libdashrpc)
 
 
 # UNIT TESTS
@@ -33,9 +33,9 @@ if (ENABLE_TESTING)
 
     include(CTest)
 
-    set(JSON_FILES_DIR "\"${PROJECT_SOURCE_DIR}/tests/json_files\"")
-    set(CONFIG_HEADER "${PROJECT_SOURCE_DIR}/tests/jsonfile.h")
-    configure_file("${PROJECT_SOURCE_DIR}/tests/jsonfile.h.in" ${CONFIG_HEADER} @ONLY)
+    set(JSON_FILES_DIR "\"${PROJECT_SOURCE_DIR}/tests/jsontests\"")
+    set(CONFIG_HEADER "${PROJECT_SOURCE_DIR}/tests/include/jsontests.h")
+    configure_file("${PROJECT_SOURCE_DIR}/tests/include/jsontests.h.in" ${CONFIG_HEADER} @ONLY)
 
     enable_testing()
     add_subdirectory(tests)
