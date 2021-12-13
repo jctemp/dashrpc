@@ -15,45 +15,51 @@ set(LIB_DEPS
 )
 
 # SETUP FOR DEPENDENCIES OF THE DASH GRPC AND CPP FILES
+set(CORE_GRPC_DEPS_BYPRODUCT "${DASH_PROTOS_DIR}/core.grpc.pb.cc" "${DASH_PROTOS_DIR}/core.grpc.pb.h")
 add_custom_target(_core_grpc_deps
-    ${PROTOC}
+    COMMAND ${PROTOC}
         -I ${DASH_PROTOS_DIR}
         --grpc_out=${DASH_PROTOS_DIR}
         --plugin=protoc-gen-grpc=${GRPC_PLUGIN}
         ${DASH_PROTOS_DIR}/${CORE_NAME}
+    BYPRODUCTS ${CORE_GRPC_DEPS_BYPRODUCT}
 )
 
+set(CORE_DEPS_BYPRODUCT "${DASH_PROTOS_DIR}/core.pb.cc" "${DASH_PROTOS_DIR}/core.pb.h")
 add_custom_target(_core_cpp_deps
     ${PROTOC}
         -I ${DASH_PROTOS_DIR}
         --cpp_out=${DASH_PROTOS_DIR}
         ${DASH_PROTOS_DIR}/${CORE_NAME}
+    BYPRODUCTS ${CORE_DEPS_BYPRODUCT}
 )
 
+set(PLATFORM_GRPC_DEPS_BYPRODUCT "${DASH_PROTOS_DIR}/platform.grpc.pb.cc" "${DASH_PROTOS_DIR}/platform.grpc.pb.h" )
 add_custom_target(_platform_grpc_deps
     ${PROTOC}
         -I ${DASH_PROTOS_DIR}
         --grpc_out=${DASH_PROTOS_DIR}
         --plugin=protoc-gen-grpc=${GRPC_PLUGIN}
         ${DASH_PROTOS_DIR}/${PLATFORM_NAME}
+    BYPRODUCTS ${PLATFORM_GRPC_DEPS_BYPRODUCT}
 )
 
+set(PLATFORM_DEPS_BYPRODUCT "${DASH_PROTOS_DIR}/platform.pb.cc" "${DASH_PROTOS_DIR}/platform.pb.h")
 add_custom_target(_platform_cpp_deps
     ${PROTOC}
         -I ${DASH_PROTOS_DIR}
         --cpp_out=${DASH_PROTOS_DIR}
         ${DASH_PROTOS_DIR}/${PLATFORM_NAME}
+    BYPRODUCTS ${PLATFORM_DEPS_BYPRODUCT}
 )
 
 # SOURCE AND HEADER FILES
-set(DASH_CORE_SOURCE "${DASH_PROTOS_DIR}/core.grpc.pb.cc" "${DASH_PROTOS_DIR}/core.pb.cc")
-set(DASH_CORE_HEADER "${DASH_PROTOS_DIR}/core.grpc.pb.h" "${DASH_PROTOS_DIR}/core.pb.h")
-set(DASH_PLATFORM_SOURCE "${DASH_PROTOS_DIR}/platform.grpc.pb.cc" "${DASH_PROTOS_DIR}/platform.pb.cc")
-set(DASH_PLATFORM_HEADER "${DASH_PROTOS_DIR}/platform.grpc.pb.h" "${DASH_PROTOS_DIR}/platform.pb.h")
 
 # GRPC TARGET
 add_library(${LIB_DASHPROTOS}
-    ${DASH_CORE_SOURCE} ${DASH_CORE_HEADER}
-    ${DASH_PLATFORM_SOURCE} ${DASH_PLATFORM_HEADER}
+    ${CORE_GRPC_DEPS_BYPRODUCT}
+    ${PLATFORM_GRPC_DEPS_BYPRODUCT}
+    ${CORE_DEPS_BYPRODUCT}
+    ${PLATFORM_DEPS_BYPRODUCT}
 )
 add_dependencies(${LIB_DASHPROTOS} ${LIB_DEPS})
