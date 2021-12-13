@@ -53,7 +53,8 @@ add_custom_target(_platform_cpp_deps
     BYPRODUCTS ${PLATFORM_DEPS_BYPRODUCT}
 )
 
-# SOURCE AND HEADER FILES
+
+find_package(Threads REQUIRED)
 
 # GRPC TARGET
 add_library(${LIB_DASHPROTOS}
@@ -62,4 +63,15 @@ add_library(${LIB_DASHPROTOS}
     ${CORE_DEPS_BYPRODUCT}
     ${PLATFORM_DEPS_BYPRODUCT}
 )
+include_directories(${LIB_DASHPROTOS} PUBLIC ${DASH_PROTOS_DIR})
+
+target_link_libraries(${LIB_DASHPROTOS} PRIVATE ${CONAN_LIBS_ABSEIL})
+target_link_libraries(${LIB_DASHPROTOS} PRIVATE ${CONAN_LIBS_OPENSSL})
+target_link_libraries(${LIB_DASHPROTOS} PRIVATE ${CONAN_LIBS_C-ARES})
+target_link_libraries(${LIB_DASHPROTOS} PRIVATE ${CONAN_LIBS_RE2})
+target_link_libraries(${LIB_DASHPROTOS} PRIVATE ${CONAN_LIBS_ZLIB})
+target_link_libraries(${LIB_DASHPROTOS} PRIVATE ${CONAN_LIBS_PROTOBUF})
+target_link_libraries(${LIB_DASHPROTOS} PRIVATE ${CONAN_LIBS_GRPC})
+
+target_link_libraries(${LIB_DASHPROTOS} PRIVATE Threads::Threads)
 add_dependencies(${LIB_DASHPROTOS} ${LIB_DEPS})

@@ -43,7 +43,6 @@ TEST_CASE("GRPC COMMANDS", "libdashrpc")
 
     SECTION("GRPC LAYER 2 CALL")
     {
-        // connection possible
         dashrpc::grpc_dash_layer();
     }
 }

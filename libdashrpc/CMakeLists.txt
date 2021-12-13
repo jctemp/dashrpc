@@ -10,7 +10,18 @@ add_library(${LIB_DASHRPC} ${DASHRPC_SOURCES} ${DASHRPC_HEADER})
 add_dependencies(${LIB_DASHRPC} ${LIB_DASHPROTOS})
 
 target_include_directories(${LIB_DASHRPC} PUBLIC ${DASHRPC_INCLUDES})
+
+target_link_libraries(${LIB_DASHPROTOS} PRIVATE ${CONAN_LIBS_ABSEIL})
+target_link_libraries(${LIB_DASHPROTOS} PRIVATE ${CONAN_LIBS_OPENSSL})
+target_link_libraries(${LIB_DASHPROTOS} PRIVATE ${CONAN_LIBS_C-ARES})
+target_link_libraries(${LIB_DASHPROTOS} PRIVATE ${CONAN_LIBS_RE2})
+target_link_libraries(${LIB_DASHPROTOS} PRIVATE ${CONAN_LIBS_ZLIB})
+target_link_libraries(${LIB_DASHPROTOS} PRIVATE ${CONAN_LIBS_PROTOBUF})
+target_link_libraries(${LIB_DASHPROTOS} PRIVATE ${CONAN_LIBS_GRPC})
+
 target_link_libraries(${LIB_DASHRPC} PRIVATE ${LIB_DASHPROTOS})
 target_link_libraries(${LIB_DASHRPC} PRIVATE ${CONAN_LIBS_FMT})
-target_link_libraries(${LIB_DASHRPC} PRIVATE ${CONAN_LIBS_GRPC})
 target_link_libraries(${LIB_DASHRPC} PRIVATE ${CONAN_LIBS_NLOHMANN_JSON})
+
+add_executable(${EXECUTABLE_NAME} "app.cpp")
+target_link_libraries(${EXECUTABLE_NAME} PUBLIC ${LIB_DASHRPC})

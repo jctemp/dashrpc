@@ -6,8 +6,12 @@
 
  */
 
-#ifndef INCLUDE_PROG_DASHRPC_HPP_
+#ifndef INCLUDE_DASHRPC_HPP_
 #define INCLUDE_DASHRPC_HPP_
+
+#ifdef INCLUDE_DASHRPC_EXTERNAL
+#include "nlohmann/json.hpp"
+#endif
 
 namespace dashrpc
 {
