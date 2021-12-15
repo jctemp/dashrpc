@@ -1,37 +1,23 @@
-# DASH WRAPPER
+# DASHRPC
 
-## INSTALL
+Wrapper library implementing grpc to communicate with dash network.
 
-```bash
-# install (Linux/ Unix only)
-sudo apt install gcovr lcov
-
-# install_docs
-pip install jinja2 Pygments
-sudo apt install doxygen
-
-# setup
-pip install conan
-conan user
-
-# std::string abi problems due to highter cpp standard
-# -> nano ~/.conan/profiles/default
-# -> compiler.libcxx=libstdc++11
-
-# prepare (top-level folder)
-rm -rf build
-mkdir build
-cd build && conan install .. && cd ..
-```
-
-## CMAKE USAGE
+## Building
 
 ```bash
-cd build && cmake .. && cmake --build .
-```
+  # setup conan profile
+  pip install conan
+  conan user
 
-## CONAN EXPLAINED
+  # change conan to download modern abi for C++ (change in C++11)
+  sed -i 's/compiler.libcxx=libstdc++/compiler.libcxx=libstdc++11/g' \
+      "${HOME}/.conan/profiles/default"
 
-```txt
-conan
+  # prepare build directory
+  rm -rf build
+  mkdir build && cd cd build
+  conan install ..
+
+  # build project inside the build directory
+  cmake .. && cmake --build .
 ```

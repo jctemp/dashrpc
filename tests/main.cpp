@@ -26,23 +26,20 @@ TEST_CASE("TEXT TO JSON", "libdashrpc")
     }
 }
 
-TEST_CASE("GRPC COMMANDS", "libdashrpc")
+TEST_CASE("GRPC LAYER 1", "libdashrpc")
 {
-    // SECTION("EXCEPTION HANDLING")
-    //     REQUIRE_THROWS_AS(send_command("", ""), std::logic_error);
-
-    SECTION("GRPC VERSION")
+    SECTION("METHOD 1")
     {
-        std::string version{dashrpc::grpc_version()};
-        REQUIRE(version.size() > 0);
+        // REQUIRE();
+        // CHECK();
     }
+}
 
-    SECTION("GRPC LAYER 1 CALL")
+TEST_CASE("GRPC LAYER 2", "libdashrpc")
+{
+    SECTION("METHOD 1")
     {
-    }
-
-    SECTION("GRPC LAYER 2 CALL")
-    {
-        dashrpc::grpc_dash_layer();
+        // REQUIRE();
+        // CHECK();
     }
 }

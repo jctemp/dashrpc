@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.18)
 
-set(PROJECT "dash_wrapper")
-project("${PROJECT}" VERSION 0.1.0 LANGUAGES CXX)
+set(PROJECT "dashrpc")
+project("${PROJECT}" VERSION 0.2.0 LANGUAGES CXX)
 
 # GLOBAL CMAKE SETTINGS
 set(CMAKE_CXX_STANDARD              17)
@@ -17,7 +17,7 @@ include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup()
 
 # PROJECT FINAL TARGETS
-set(EXECUTABLE_NAME "${PROJECT}_Executable")
+# set(EXECUTABLE_NAME "${PROJECT}_app")
 set(TEST_MAIN       "${PROJECT}_unit_tests")
 
 # LIBRARY AND SUBDIRECTORY
