@@ -10,11 +10,21 @@ set(CMAKE_CXX_EXTENSIONS            OFF)
 set(CMAKE_EXPORT_COMPILE_COMMANDS   ON)
 
 # OPTIONS
-option(ENABLE_TESTING "Enable a Unit Testing build." ON)
+option(ENABLE_TESTING "Enable a Unit Testing build." OFF)
 
 # INCLUDES
-include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
-conan_basic_setup()
+set(PATH_CATCH "extern/Catch2")
+add_subdirectory(${PATH_CATCH})
+
+set(PATH_FMT   "extern/fmt")
+add_subdirectory(${PATH_FMT})
+
+set(ABSL_PROPAGATE_CXX_STD ON)
+set(PATH_GRPC  "extern/grpc")
+add_subdirectory(${PATH_GRPC})
+
+set(PATH_JSON  "extern/json")
+add_subdirectory(${PATH_JSON})
 
 # PROJECT FINAL TARGETS
 # set(EXECUTABLE_NAME "${PROJECT}_app")
