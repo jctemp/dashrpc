@@ -1,11 +1,14 @@
-# Sources
+# TARGETS
+set(UNIT_TEST_MAIN "${PROJECT}_unit_tests")
+
+# SOURCES
 set(TEST_SOURCES "main.cpp")
 
-# Executable
-add_executable(${TEST_MAIN} ${TEST_SOURCES} ${CONFIG_HEADER})
+# UNIT TESTS EXECUTABLE
+add_executable(${UNIT_TEST_MAIN} ${TEST_SOURCES})
+target_link_libraries(${UNIT_TEST_MAIN} PRIVATE
+    ${LIB_DASHRPC}
+    nlohmann_json
+    Catch2::Catch2WithMain)
 
-# Settings
-target_link_libraries(${TEST_MAIN} ${LIB_DASHRPC})
-
-# Test
-add_test(NAME ${LIBRARY_NAME}.${TEST_MAIN} COMMAND ${TEST_MAIN})
+add_test(NAME "${PROJECT_NAME}_functions" COMMAND ${UNIT_TEST_MAIN})

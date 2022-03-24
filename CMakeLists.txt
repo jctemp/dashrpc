@@ -10,9 +10,9 @@ set(CMAKE_CXX_EXTENSIONS            OFF)
 set(CMAKE_EXPORT_COMPILE_COMMANDS   ON)
 
 # OPTIONS
-option(ENABLE_TESTING "Enable a Unit Testing build." OFF)
+option(ENABLE_TESTING_DASHRPC "Enable a Unit Testing build." OFF)
 
-# INCLUDES
+# SUBMODULES
 set(PATH_CATCH "extern/Catch2")
 add_subdirectory(${PATH_CATCH})
 
@@ -28,29 +28,17 @@ include_directories("${PATH_GRPC}/third_party/abseil-cpp")
 
 set(PATH_JSON  "extern/json")
 add_subdirectory(${PATH_JSON})
-
-# PROJECT FINAL TARGETS
-# set(EXECUTABLE_NAME "${PROJECT}_app")
-set(TEST_MAIN       "${PROJECT}_unit_tests")
+include_directories("${PATH_JSON}/include")
 
 # LIBRARY AND SUBDIRECTORY
-set(LIB_DASHPROTOS "libdashprotos")
-set(LIB_DASHRPC  "libdashrpc")
-
+set(LIB_DASHPROTOS "dashprotos")
+set(LIB_DASHRPC "dashrpc")
 add_subdirectory(libdashprotos)
 add_subdirectory(libdashrpc)
 
-
 # UNIT TESTS
-if (ENABLE_TESTING)
-
-    include(CTest)
-
-    set(JSON_FILES_DIR "\"${PROJECT_SOURCE_DIR}/tests/jsontests\"")
-    set(CONFIG_HEADER "${PROJECT_SOURCE_DIR}/tests/include/jsontests.h")
-    configure_file("${PROJECT_SOURCE_DIR}/tests/include/jsontests.h.in" ${CONFIG_HEADER} @ONLY)
-
+include(CTest)
+if(ENABLE_TESTING_DASHRPC)
     enable_testing()
     add_subdirectory(tests)
-
 endif()

@@ -35,8 +35,8 @@ SOFTWARE.
 #define DASHRPC_VERSION_PATCH 0
 
 #include <nlohmann/json.hpp>
-#include <core.hpp>
-#include <platform.hpp>
+#include "core.hpp"
+#include "platform.hpp"
 
 namespace dashrpc
 {

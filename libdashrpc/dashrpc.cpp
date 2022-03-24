@@ -1,4 +1,4 @@
-#include <dashrpc.hpp>
+#include <dashrpc/dashrpc.hpp>
 
 #include <fstream>
 #include <fmt/color.h>
