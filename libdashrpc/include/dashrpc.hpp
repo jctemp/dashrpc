@@ -31,15 +31,12 @@ SOFTWARE.
 #define INCLUDE_DASHRPC_HPP_
 
 #define DASHRPC_VERSION_MAJOR 0
-#define DASHRPC_VERSION_MINOR 0
+#define DASHRPC_VERSION_MINOR 2
 #define DASHRPC_VERSION_PATCH 0
 
-#include "nlohmann/json.hpp"
-#include <memory>
-#include <string>
-
-#include "core.hpp"
-#include "platform.hpp"
+#include <nlohmann/json.hpp>
+#include <core.hpp>
+#include <platform.hpp>
 
 namespace dashrpc
 {
