@@ -8,7 +8,7 @@ set(TEST_SOURCES "main.cpp")
 add_executable(${UNIT_TEST_MAIN} ${TEST_SOURCES})
 target_link_libraries(${UNIT_TEST_MAIN} PRIVATE
     ${LIB_DASHRPC}
-    nlohmann_json
-    Catch2::Catch2WithMain)
+    ${LIBS_JSON}
+    ${LIBS_CATCH})
 
 add_test(NAME "${PROJECT_NAME}_functions" COMMAND ${UNIT_TEST_MAIN})

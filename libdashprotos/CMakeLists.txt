@@ -3,14 +3,20 @@ set(CORE_NAME "core.proto")
 set(PLATFORM_NAME "platform.proto")
 
 # Set path to executables (protoc and grpc)
-set(PROTOC "${PROJECT_BINARY_DIR}/extern/grpc/third_party/protobuf/protoc-3.19.4.0")
-set(GRPC_PLUGIN "${PROJECT_BINARY_DIR}/extern/grpc/grpc_cpp_plugin")
+if(ENABLE_DASHRPC_CONAN)
+    set(GRPC_PLUGIN "${CONAN_BIN_DIRS_GRPC}/grpc_cpp_plugin")
+    set(PROTOC      "${CONAN_BIN_DIRS_PROTOBUF}/protoc")
+else()
+    set(GRPC_PLUGIN "${PROJECT_BINARY_DIR}/extern/grpc/grpc_cpp_plugin")
+    set(PROTOC      "${PROJECT_BINARY_DIR}/extern/grpc/third_party/protobuf/protoc")
+endif()
 
 # Proto file
 get_filename_component(core_proto     "${CMAKE_CURRENT_SOURCE_DIR}/core.proto"     ABSOLUTE)
 get_filename_component(platform_proto "${CMAKE_CURRENT_SOURCE_DIR}/platform.proto" ABSOLUTE)
-set(proto_path "${CMAKE_CURRENT_SOURCE_DIR}")
+set(proto_path                        "${CMAKE_CURRENT_SOURCE_DIR}")
 
+# create destination folder
 set(source_dir_path "${CMAKE_CURRENT_BINARY_DIR}/proto")
 if(NOT EXISTS "${source_dir_path}")
     file(MAKE_DIRECTORY "${source_dir_path}")
@@ -39,11 +45,12 @@ add_custom_command(
         "${platform_grpc_header}"
     COMMAND ${PROTOC}
     ARGS --grpc_out "${CMAKE_CURRENT_BINARY_DIR}/proto"
-         --cpp_out "${CMAKE_CURRENT_BINARY_DIR}/proto"
-         -I "${proto_path}"
+         --cpp_out  "${CMAKE_CURRENT_BINARY_DIR}/proto"
+         -I         "${proto_path}"
          --plugin=protoc-gen-grpc=${GRPC_PLUGIN}
          "${core_proto}" "${platform_proto}"
-    DEPENDS "${core_proto}" "${platform_proto}")
+    DEPENDS
+         "${core_proto}" "${platform_proto}")
 
 find_package(Threads REQUIRED)
 
@@ -63,7 +70,10 @@ target_include_directories(${LIB_DASHPROTOS} PUBLIC
     "${CMAKE_CURRENT_BINARY_DIR}")
 
 target_link_libraries(${LIB_DASHPROTOS} PRIVATE
-    ${_REFLECTION}
-    ${_GRPC_GRPCPP}
-    ${_PROTOBUF_LIBPROTOBUF}
+    ${LIBS_GRPC}
+    ${LIBS_PROTOBUF}
     Threads::Threads)
+
+if(NOT ENABLE_DASHRPC_CONAN)
+    add_dependencies(${LIB_DASHPROTOS} ${LIBS_DEPS_PROTOBUF})
+endif()

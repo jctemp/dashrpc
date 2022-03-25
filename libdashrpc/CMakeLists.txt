@@ -21,12 +21,8 @@ target_include_directories(${LIB_DASHRPC} PUBLIC ${DASHRPC_INCLUDES})
 
 # LINK AGAINS DEPENDENCIES
 target_link_libraries(${LIB_DASHRPC} PRIVATE
-    # grpc and proto
-    ${_REFLECTION}
-    ${_GRPC_GRPCPP}
-    ${_PROTOBUF_LIBPROTOBUF}
-    # io and json
-    fmt::fmt
-    nlohmann_json
-    # proto deps
+    ${LIBS_GRPC}
+    ${LIBS_PROTOBUF}
+    ${LIBS_FMT}
+    ${LIBS_JSON}
     ${LIB_DASHPROTOS})
