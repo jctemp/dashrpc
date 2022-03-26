@@ -1,77 +1,79 @@
 # SETUP FOR DEPENDENCIES OF THE DASH GRPC AND CPP FILES
-set(DASH_PROTOS_DIR "${PROJECT_SOURCE_DIR}/libdashprotos")
-
-set(PROTOC "${CONAN_BIN_DIRS_PROTOBUF}/protoc")
-set(GRPC_PLUGIN "${CONAN_BIN_DIRS_GRPC}/grpc_cpp_plugin")
-
 set(CORE_NAME "core.proto")
 set(PLATFORM_NAME "platform.proto")
 
-set(LIB_DEPS
-    "_core_grpc_deps"
-    "_core_cpp_deps"
-    "_platform_grpc_deps"
-    "_platform_cpp_deps"
-)
+# Set path to executables (protoc and grpc)
+if(ENABLE_DASHRPC_CONAN)
+    set(GRPC_PLUGIN "${CONAN_BIN_DIRS_GRPC}/grpc_cpp_plugin")
+    set(PROTOC      "${CONAN_BIN_DIRS_PROTOBUF}/protoc")
+else()
+    set(GRPC_PLUGIN "${PROJECT_BINARY_DIR}/extern/grpc/grpc_cpp_plugin")
+    set(PROTOC      "${PROJECT_BINARY_DIR}/extern/grpc/third_party/protobuf/protoc")
+endif()
+
+# Proto file
+get_filename_component(core_proto     "${CMAKE_CURRENT_SOURCE_DIR}/core.proto"     ABSOLUTE)
+get_filename_component(platform_proto "${CMAKE_CURRENT_SOURCE_DIR}/platform.proto" ABSOLUTE)
+set(proto_path                        "${CMAKE_CURRENT_SOURCE_DIR}")
+
+# create destination folder
+set(source_dir_path "${CMAKE_CURRENT_BINARY_DIR}/proto")
+if(NOT EXISTS "${source_dir_path}")
+    file(MAKE_DIRECTORY "${source_dir_path}")
+endif()
+
+# Generated Sources
+set(core_proto_source     "${CMAKE_CURRENT_BINARY_DIR}/proto/core.pb.cc")
+set(core_proto_header     "${CMAKE_CURRENT_BINARY_DIR}/proto/core.pb.h")
+set(platform_proto_source "${CMAKE_CURRENT_BINARY_DIR}/proto/platform.pb.cc")
+set(platform_proto_header "${CMAKE_CURRENT_BINARY_DIR}/proto/platform.pb.h")
+set(core_grpc_source      "${CMAKE_CURRENT_BINARY_DIR}/proto/core.grpc.pb.cc")
+set(core_grpc_header      "${CMAKE_CURRENT_BINARY_DIR}/proto/core.grpc.pb.h")
+set(platform_grpc_source  "${CMAKE_CURRENT_BINARY_DIR}/proto/platform.grpc.pb.cc")
+set(platform_grpc_header  "${CMAKE_CURRENT_BINARY_DIR}/proto/platform.grpc.pb.h")
 
 # SETUP FOR DEPENDENCIES OF THE DASH GRPC AND CPP FILES
-set(CORE_GRPC_DEPS_BYPRODUCT "${DASH_PROTOS_DIR}/core.grpc.pb.cc" "${DASH_PROTOS_DIR}/core.grpc.pb.h")
-add_custom_target(_core_grpc_deps
+add_custom_command(
+    OUTPUT
+        "${core_proto_source}"
+        "${core_proto_header}"
+        "${core_grpc_source}"
+        "${core_grpc_header}"
+        "${platform_proto_source}"
+        "${platform_proto_header}"
+        "${platform_grpc_source}"
+        "${platform_grpc_header}"
     COMMAND ${PROTOC}
-        -I ${DASH_PROTOS_DIR}
-        --grpc_out=${DASH_PROTOS_DIR}
-        --plugin=protoc-gen-grpc=${GRPC_PLUGIN}
-        ${DASH_PROTOS_DIR}/${CORE_NAME}
-    BYPRODUCTS ${CORE_GRPC_DEPS_BYPRODUCT}
-)
-
-set(CORE_DEPS_BYPRODUCT "${DASH_PROTOS_DIR}/core.pb.cc" "${DASH_PROTOS_DIR}/core.pb.h")
-add_custom_target(_core_cpp_deps
-    ${PROTOC}
-        -I ${DASH_PROTOS_DIR}
-        --cpp_out=${DASH_PROTOS_DIR}
-        ${DASH_PROTOS_DIR}/${CORE_NAME}
-    BYPRODUCTS ${CORE_DEPS_BYPRODUCT}
-)
-
-set(PLATFORM_GRPC_DEPS_BYPRODUCT "${DASH_PROTOS_DIR}/platform.grpc.pb.cc" "${DASH_PROTOS_DIR}/platform.grpc.pb.h" )
-add_custom_target(_platform_grpc_deps
-    ${PROTOC}
-        -I ${DASH_PROTOS_DIR}
-        --grpc_out=${DASH_PROTOS_DIR}
-        --plugin=protoc-gen-grpc=${GRPC_PLUGIN}
-        ${DASH_PROTOS_DIR}/${PLATFORM_NAME}
-    BYPRODUCTS ${PLATFORM_GRPC_DEPS_BYPRODUCT}
-)
-
-set(PLATFORM_DEPS_BYPRODUCT "${DASH_PROTOS_DIR}/platform.pb.cc" "${DASH_PROTOS_DIR}/platform.pb.h")
-add_custom_target(_platform_cpp_deps
-    ${PROTOC}
-        -I ${DASH_PROTOS_DIR}
-        --cpp_out=${DASH_PROTOS_DIR}
-        ${DASH_PROTOS_DIR}/${PLATFORM_NAME}
-    BYPRODUCTS ${PLATFORM_DEPS_BYPRODUCT}
-)
-
+    ARGS --grpc_out "${CMAKE_CURRENT_BINARY_DIR}/proto"
+         --cpp_out  "${CMAKE_CURRENT_BINARY_DIR}/proto"
+         -I         "${proto_path}"
+         --plugin=protoc-gen-grpc=${GRPC_PLUGIN}
+         "${core_proto}" "${platform_proto}"
+    DEPENDS
+         "${core_proto}" "${platform_proto}")
 
 find_package(Threads REQUIRED)
 
 # GRPC TARGET
 add_library(${LIB_DASHPROTOS}
-    ${CORE_GRPC_DEPS_BYPRODUCT}
-    ${PLATFORM_GRPC_DEPS_BYPRODUCT}
-    ${CORE_DEPS_BYPRODUCT}
-    ${PLATFORM_DEPS_BYPRODUCT}
-)
-include_directories(${LIB_DASHPROTOS} PUBLIC ${DASH_PROTOS_DIR})
+    "${core_proto_source}"
+    "${core_proto_header}"
+    "${core_grpc_source}"
+    "${core_grpc_header}"
+    "${platform_proto_source}"
+    "${platform_proto_header}"
+    "${platform_grpc_source}"
+    "${platform_grpc_header}")
 
-target_link_libraries(${LIB_DASHPROTOS} PRIVATE ${CONAN_LIBS_ABSEIL})
-target_link_libraries(${LIB_DASHPROTOS} PRIVATE ${CONAN_LIBS_OPENSSL})
-target_link_libraries(${LIB_DASHPROTOS} PRIVATE ${CONAN_LIBS_C-ARES})
-target_link_libraries(${LIB_DASHPROTOS} PRIVATE ${CONAN_LIBS_RE2})
-target_link_libraries(${LIB_DASHPROTOS} PRIVATE ${CONAN_LIBS_ZLIB})
-target_link_libraries(${LIB_DASHPROTOS} PRIVATE ${CONAN_LIBS_PROTOBUF})
-target_link_libraries(${LIB_DASHPROTOS} PRIVATE ${CONAN_LIBS_GRPC})
+target_include_directories(${LIB_DASHPROTOS} PUBLIC
+    "${DASH_PROTOS_DIR}"
+    "${CMAKE_CURRENT_BINARY_DIR}")
 
-target_link_libraries(${LIB_DASHPROTOS} PRIVATE Threads::Threads)
-add_dependencies(${LIB_DASHPROTOS} ${LIB_DEPS})
+target_link_libraries(${LIB_DASHPROTOS} PRIVATE
+    ${LIBS_GRPC}
+    ${LIBS_PROTOBUF}
+    Threads::Threads)
+
+if(NOT ENABLE_DASHRPC_CONAN)
+    add_dependencies(${LIB_DASHPROTOS} ${LIBS_DEPS_PROTOBUF})
+endif()

@@ -1,13 +1,11 @@
+#include <dashrpc/core.hpp>
+
 #include <fmt/color.h>
 #include <fmt/core.h>
-#include <fstream>
 #include <grpcpp/grpcpp.h>
 
-#include <core.hpp>
-
-// TODO: need better include of libdashprotos
-#include "../libdashprotos/core.grpc.pb.h"
-#include "../libdashprotos/core.pb.h"
+#include <proto/core.grpc.pb.h>
+#include <proto/core.pb.h>
 
 namespace Dash = org::dash::platform::dapi::v0;
 
