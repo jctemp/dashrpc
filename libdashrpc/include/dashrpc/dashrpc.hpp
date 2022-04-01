@@ -1,7 +1,7 @@
 /*
    ___  ___   ______ _____  ___  _____
   / _ \/ _ | / __/ // / _ \/ _ \/ ___/   DashRPC Wrapper
- / // / __ |_\ \/ _  / , _/ ___/ /__     version 0.0.0
+ / // / __ |_\ \/ _  / , _/ ___/ /__     version 0.2.1
 /____/_/ |_/___/_//_/_/|_/_/   \___/     https://github.com/jamie-prog/dashrpc
 
 Licensed under GPL-3.0 License <https://opensource.org/licenses/GPL-3.0>.
@@ -32,7 +32,7 @@ SOFTWARE.
 
 #define DASHRPC_VERSION_MAJOR 0
 #define DASHRPC_VERSION_MINOR 2
-#define DASHRPC_VERSION_PATCH 0
+#define DASHRPC_VERSION_PATCH 1
 
 #include <nlohmann/json.hpp>
 #include "core.hpp"

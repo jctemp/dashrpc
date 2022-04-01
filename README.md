@@ -18,7 +18,7 @@ git clone https://github.com/jctemp/dashrpc
 cd dashrpc
 
 # recursively update submodule Catch2 => required and no conan dep
-git submodule update --init --recursive extern/Catch2
+git submodule update --init --recursive extern/Catch2 extern/platform
 
 # recursively update submodules if you not want to use conan
 git submodule update --init --recursive

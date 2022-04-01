@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.18)
 
 set(PROJECT "dashrpc")
-project("${PROJECT}" VERSION 0.2.0 LANGUAGES CXX)
+project("${PROJECT}" VERSION 0.2.1 LANGUAGES CXX)
 
 # GLOBAL CMAKE SETTINGS
 set(CMAKE_CXX_STANDARD              17)

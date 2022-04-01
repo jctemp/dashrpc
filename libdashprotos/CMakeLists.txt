@@ -11,10 +11,18 @@ else()
     set(PROTOC      "${PROJECT_BINARY_DIR}/extern/grpc/third_party/protobuf/protoc")
 endif()
 
-# Proto file
-get_filename_component(core_proto     "${CMAKE_CURRENT_SOURCE_DIR}/core.proto"     ABSOLUTE)
-get_filename_component(platform_proto "${CMAKE_CURRENT_SOURCE_DIR}/platform.proto" ABSOLUTE)
-set(proto_path                        "${CMAKE_CURRENT_SOURCE_DIR}")
+# protofiles
+
+set(PATH_TO_CORE     "../extern/platform/packages/dapi-grpc/protos/core/v0")
+set(PATH_TO_PLATFORM "../extern/platform/packages/dapi-grpc/protos/platform/v0")
+
+add_custom_target(core_proto ALL
+    COMMAND ${CMAKE_COMMAND} -E create_symlink  "${CMAKE_CURRENT_SOURCE_DIR}/${PATH_TO_CORE}/${CORE_NAME}" "${CMAKE_CURRENT_BINARY_DIR}/${CORE_NAME}")
+
+add_custom_target(platform_proto ALL
+    COMMAND ${CMAKE_COMMAND} -E create_symlink  "${CMAKE_CURRENT_SOURCE_DIR}/${PATH_TO_PLATFORM}/${PLATFORM_NAME}" "${CMAKE_CURRENT_BINARY_DIR}/${PLATFORM_NAME}")
+
+set(proto_path "${CMAKE_CURRENT_BINARY_DIR}")
 
 # create destination folder
 set(source_dir_path "${CMAKE_CURRENT_BINARY_DIR}/proto")
@@ -48,9 +56,9 @@ add_custom_command(
          --cpp_out  "${CMAKE_CURRENT_BINARY_DIR}/proto"
          -I         "${proto_path}"
          --plugin=protoc-gen-grpc=${GRPC_PLUGIN}
-         "${core_proto}" "${platform_proto}"
+         "${CMAKE_CURRENT_BINARY_DIR}/${CORE_NAME}" "${CMAKE_CURRENT_BINARY_DIR}/${PLATFORM_NAME}"
     DEPENDS
-         "${core_proto}" "${platform_proto}")
+         core_proto platform_proto)
 
 find_package(Threads REQUIRED)
 
