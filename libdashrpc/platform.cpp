@@ -29,7 +29,7 @@ namespace dashrpc
     void platform::PrintMetadataMsg(auto metaDataRes) {
         fmt::print(fmt::fg(fmt::color::green), "\nMETADATA TRANSITION RESULT\n");
         fmt::print("Last comitted platform state height={}\n", metaDataRes.height());
-        fmt::print("Most recent ChainLock on the core chain{}\n", metaDataRes.coreChainLockedHeight())
+        fmt::print("Most recent ChainLock on the core chain{}\n", metaDataRes.core_chain_locked_height());
     }
 
     void platform::PrintProofMsg(auto proofRes) { //Verify that data is being  valid
@@ -63,10 +63,6 @@ namespace dashrpc
             PrintMetadataMsg(waitStateRes.metadata());
         }
 
-        if(waitStateRes.has_proof()) {
-            PrintProofMsg(waitStateRes.proof());
-        }
-
         if(waitStateRes.has_error()) {
             auto errorTransition{waitStateRes.error()};
             fmt::print(fmt::fg(fmt::color::red), "\nTRANSITION RESULT ERROR");
@@ -80,11 +76,16 @@ namespace dashrpc
 
     int32_t platform::identity(void)
     {
+
+
         grpc::ClientContext ctx;
         Dash::GetIdentityRequest identityReq;
         Dash::GetIdentityResponse identityRes;
+        //start timestamp
 
         connection->stub->getIdentity(&ctx, identityReq, &identityRes);
+
+        //end timestamp
 
         if(!(identityRes.identity().empty())) {
             fmt::print(fmt::fg(fmt::color::green), "\nIDENTITY: {}\n", identityRes.identity());
@@ -94,9 +95,7 @@ namespace dashrpc
             PrintMetadataMsg(identityRes.metadata());
         }
 
-        if(identityRes.has_proof()) {
-            PrintProofMsg(identityRes.proof());
-        }
+        //als json parse as binary
 
         return 0;
     }
@@ -112,10 +111,6 @@ namespace dashrpc
 
         if(!(contractRes.data_contract().empty())) {
             fmt::print(fmt::fg(fmt::color::green), "\nCONTRACT: {}\n", contractRes.data_contract());
-        }
-
-        if(contractRes.has_proof()) {
-            PrintProofMsg(contractRes.proof());
         }
 
         if(contractRes.has_metadata()) {
@@ -137,10 +132,6 @@ namespace dashrpc
             fmt::print(fmt::fg(fmt::color::green), "\nDOCUMENT SIZE: {} byte\n", documentRes.documents_size());
         }
 
-        if(documentRes.has_proof()) {
-            PrintProofMsg(documentRes.proof());
-        }
-
         if(documentRes.has_metadata()) {
             PrintMetadataMsg(documentRes.metadata());
         }
@@ -157,15 +148,16 @@ namespace dashrpc
         connection->stub->getIdentitiesByPublicKeyHashes(&ctx, identitiesReq, &identitiesRes);
 
         if(identitiesRes.identities().size() > 0) {
-            fmt::print(fmt::fg(fmt::color::green), "\nIDENTITIES: {}\n", identitiesRes.identities());
+            std::string sIdentities = "";
+            for(auto identity: identitiesRes.identities()) {
+                sIdentities += identity;
+            }
+
+            fmt::print(fmt::fg(fmt::color::green), "\nIDENTITIES: {}\n", sIdentities);
         }
 
         if(identitiesRes.identities_size() > 0) {
             fmt::print(fmt::fg(fmt::color::green), "\nIDENTITY SIZE: {} byte\n", identitiesRes.identities_size());
-        }
-
-        if(identitiesRes.has_proof()) {
-            PrintProofMsg(identitiesRes.proof());
         }
 
         if(identitiesRes.has_metadata()) {
@@ -184,15 +176,15 @@ namespace dashrpc
         connection->stub->getIdentityIdsByPublicKeyHashes(&ctx, identityIdReq, &identityIdRes);
 
         if(!(identityIdRes.identity_ids().empty())) {
-            fmt::print(fmt::fg(fmt::color::green), "\nIDENTITIES: {}\n", identityIdRes.identity_ids());
+            std::string sIds = "";
+            for(auto identityId: identityIdRes.identity_ids()) {
+                sIds += identityId;
+            }
+            fmt::print(fmt::fg(fmt::color::green), "\nIDENTITIES: {}\n", sIds);
         }
 
         if(identityIdRes.identity_ids_size() > 0) {
             fmt::print(fmt::fg(fmt::color::green), "\nIDENTITY SIZE: {} byte\n", identityIdRes.identity_ids_size());
-        }
-
-        if(identityIdRes.has_proof()) {
-            PrintProofMsg(identityIdRes.proof());
         }
 
         if(identityIdRes.has_metadata()) {
