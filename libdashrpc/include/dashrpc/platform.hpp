@@ -32,6 +32,8 @@ public:
      */
     static void init(std::string address = "seed-1.testnet.networks.dash.org", uint16_t port = 3010);
 
+    static void PrintMetadataMsg(auto);
+    static void PrintProofMsg(auto);
     static int32_t broadcast_state_transition(void);
     static int32_t identity(void);
     static int32_t data_contract(void);
