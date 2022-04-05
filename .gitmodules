@@ -1,0 +1,15 @@
+[submodule "extern/grpc"]
+	path = extern/grpc
+	url = https://github.com/grpc/grpc
+[submodule "extern/fmt"]
+	path = extern/fmt
+	url = https://github.com/fmtlib/fmt.git
+[submodule "extern/json"]
+	path = extern/json
+	url = https://github.com/nlohmann/json.git
+[submodule "extern/Catch2"]
+	path = extern/Catch2
+	url = https://github.com/catchorg/Catch2.git
+[submodule "extern/platform"]
+	path = extern/platform
+	url = https://github.com/dashevo/platform.git

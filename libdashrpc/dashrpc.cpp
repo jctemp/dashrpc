@@ -1,15 +1,14 @@
-#include "dashrpc.hpp"
+#include <dashrpc/dashrpc.hpp>
 
+#include <fstream>
 #include <fmt/color.h>
 #include <fmt/core.h>
-#include <fstream>
 #include <grpcpp/grpcpp.h>
 
-#include "../libdashprotos/core.grpc.pb.h"
-#include "../libdashprotos/core.pb.h"
-
-#include "../libdashprotos/platform.grpc.pb.h"
-#include "../libdashprotos/platform.pb.h"
+#include <proto/core.grpc.pb.h>
+#include <proto/core.pb.h>
+#include <proto/platform.grpc.pb.h>
+#include <proto/platform.pb.h>
 
 namespace Dash = org::dash::platform::dapi::v0;
 
@@ -21,7 +20,6 @@ void grpc_demo(void)
     Dash::GetStatusRequest req;
     Dash::GetStatusResponse res;
     grpc::ClientContext ctx;
-
 
     stub->getStatus(&ctx, req, &res);
 

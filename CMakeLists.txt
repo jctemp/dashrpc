@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.18)
 
 set(PROJECT "dashrpc")
-project("${PROJECT}" VERSION 0.2.0 LANGUAGES CXX)
+project("${PROJECT}" VERSION 0.2.1 LANGUAGES CXX)
 
 # GLOBAL CMAKE SETTINGS
 set(CMAKE_CXX_STANDARD              17)
@@ -10,34 +10,59 @@ set(CMAKE_CXX_EXTENSIONS            OFF)
 set(CMAKE_EXPORT_COMPILE_COMMANDS   ON)
 
 # OPTIONS
-option(ENABLE_TESTING "Enable a Unit Testing build." ON)
+option(ENABLE_DASHRPC_TESTING    "Enable a Unit Testing build." OFF)
+option(ENABLE_DASHRPC_CONAN "Use conan for libraries rather then submodules" OFF)
 
-# INCLUDES
-include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
-conan_basic_setup()
+# SUBMODS OR CONAN
+if(ENABLE_DASHRPC_CONAN)
+    include("${CMAKE_BINARY_DIR}/conanbuildinfo.cmake")
+    conan_basic_setup()
 
-# PROJECT FINAL TARGETS
-# set(EXECUTABLE_NAME "${PROJECT}_app")
-set(TEST_MAIN       "${PROJECT}_unit_tests")
+    # SET TARGET TO LINK AGAINST
+    set(LIBS_FMT      ${CONAN_LIBS_FMT})
+    set(LIBS_JSON     ${CONAN_LIBS_NLOHMANN_JSON})
+    set(LIBS_GRPC     ${CONAN_LIBS_GRPC})
+    set(LIBS_PROTOBUF ${CONAN_LIBS_PROTOBUF})
+else()
+    # SUBMODULES
+    set(PATH_FMT   "extern/fmt")
+    set(PATH_GRPC  "extern/grpc")
+    set(PATH_JSON  "extern/json")
+    set(ABSL_PROPAGATE_CXX_STD ON)
+
+    add_subdirectory(${PATH_FMT})
+    add_subdirectory(${PATH_GRPC})
+    add_subdirectory(${PATH_JSON})
+
+    include_directories("${PATH_GRPC}/include")
+    include_directories("${PATH_GRPC}/third_party/protobuf/src")
+    include_directories("${PATH_GRPC}/third_party/abseil-cpp")
+    include_directories("${PATH_JSON}/include")
+
+    # SET TARGET TO LINK AGAINST
+    set(LIBS_FMT           fmt::fmt)
+    set(LIBS_PROTOBUF      protobuf)
+    set(LIBS_DEPS_PROTOBUF protoc)
+    set(LIBS_JSON          nlohmann_json::nlohmann_json)
+    set(LIBS_GRPC          grpc++_alts grpc++_error_details grpc_plugin_support
+                           grpc++_unsecur grpc_unsecure grpc++_reflection grpcpp_channelz
+                           grpc++ grpc address_sorting gpr upb)
+endif()
+
+# REQUIRED
+set(PATH_CATCH "extern/Catch2")
+add_subdirectory(${PATH_CATCH})
+set(LIBS_CATCH         Catch2::Catch2WithMain Catch2::Catch2)
 
 # LIBRARY AND SUBDIRECTORY
-set(LIB_DASHPROTOS "libdashprotos")
-set(LIB_DASHRPC  "libdashrpc")
-
+set(LIB_DASHPROTOS "dashprotos")
+set(LIB_DASHRPC    "dashrpc")
 add_subdirectory(libdashprotos)
 add_subdirectory(libdashrpc)
 
-
 # UNIT TESTS
-if (ENABLE_TESTING)
-
-    include(CTest)
-
-    set(JSON_FILES_DIR "\"${PROJECT_SOURCE_DIR}/tests/jsontests\"")
-    set(CONFIG_HEADER "${PROJECT_SOURCE_DIR}/tests/include/jsontests.h")
-    configure_file("${PROJECT_SOURCE_DIR}/tests/include/jsontests.h.in" ${CONFIG_HEADER} @ONLY)
-
+include(CTest)
+if(ENABLE_DASHRPC_TESTING)
     enable_testing()
     add_subdirectory(tests)
-
 endif()

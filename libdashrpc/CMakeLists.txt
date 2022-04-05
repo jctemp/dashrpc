@@ -1,34 +1,28 @@
-set(LIBDASHRPC_DIR "${PROJECT_SOURCE_DIR}/libdashrpc")
-
-# DASHRPC SOURCE AND HEADERS
+# DASHRPC SOURCE
 set(DASHRPC_SOURCES
-    "${LIBDASHRPC_DIR}/dashrpc.cpp"
-    "${LIBDASHRPC_DIR}/core.cpp"
-    "${LIBDASHRPC_DIR}/platform.cpp"
-)
+    "${CMAKE_CURRENT_SOURCE_DIR}/dashrpc.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/core.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/platform.cpp")
+
+# DASHRPC HEADERS
 set(DASHRPC_HEADER
-    "${LIBDASHRPC_DIR}/include/dashrpc.hpp"
-    "${LIBDASHRPC_DIR}/include/core.hpp"
-    "${LIBDASHRPC_DIR}/include/platform.hpp"
-)
-set(DASHRPC_INCLUDES
-    "${LIBDASHRPC_DIR}/include/"
-)
+    "${CMAKE_CURRENT_SOURCE_DIR}/include/dashrpc/dashrpc.hpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/include/dashrpc/core.hpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/include/dashrpc/platform.hpp")
+
+# DASHRPC INCLUDE DIRS
+set(DASHRPC_INCLUDES "${CMAKE_CURRENT_SOURCE_DIR}/include/")
 
 # DEFINE LIBRPC AS A TARGET
 add_library(${LIB_DASHRPC} ${DASHRPC_SOURCES} ${DASHRPC_HEADER})
-add_dependencies(${LIB_DASHRPC} ${LIB_DASHPROTOS})
 
+# SET INCLUDE DIR FOR OTHER LINKING TARGETS
 target_include_directories(${LIB_DASHRPC} PUBLIC ${DASHRPC_INCLUDES})
 
-target_link_libraries(${LIB_DASHPROTOS} PRIVATE ${CONAN_LIBS_ABSEIL})
-target_link_libraries(${LIB_DASHPROTOS} PRIVATE ${CONAN_LIBS_OPENSSL})
-target_link_libraries(${LIB_DASHPROTOS} PRIVATE ${CONAN_LIBS_C-ARES})
-target_link_libraries(${LIB_DASHPROTOS} PRIVATE ${CONAN_LIBS_RE2})
-target_link_libraries(${LIB_DASHPROTOS} PRIVATE ${CONAN_LIBS_ZLIB})
-target_link_libraries(${LIB_DASHPROTOS} PRIVATE ${CONAN_LIBS_PROTOBUF})
-target_link_libraries(${LIB_DASHPROTOS} PRIVATE ${CONAN_LIBS_GRPC})
-
-target_link_libraries(${LIB_DASHRPC} PRIVATE ${LIB_DASHPROTOS})
-target_link_libraries(${LIB_DASHRPC} PRIVATE ${CONAN_LIBS_FMT})
-target_link_libraries(${LIB_DASHRPC} PRIVATE ${CONAN_LIBS_NLOHMANN_JSON})
+# LINK AGAINS DEPENDENCIES
+target_link_libraries(${LIB_DASHRPC} PRIVATE
+    ${LIBS_GRPC}
+    ${LIBS_PROTOBUF}
+    ${LIBS_FMT}
+    ${LIBS_JSON}
+    ${LIB_DASHPROTOS})
