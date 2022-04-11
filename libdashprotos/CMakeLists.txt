@@ -79,7 +79,12 @@ target_include_directories(${LIB_DASHPROTOS} PUBLIC
 
 target_link_libraries(${LIB_DASHPROTOS} PRIVATE
     ${LIBS_GRPC}
+    ${LIBS_OPENSSL}
     ${LIBS_PROTOBUF}
+    ${LIBS_C_ARES}
+    ${LIBS_ABSEIL}
+    ${LIBS_RE2}
+    ${LIBS_ZLIB}
     Threads::Threads)
 
 if(NOT ENABLE_DASHRPC_CONAN)

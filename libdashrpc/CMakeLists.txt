@@ -21,8 +21,13 @@ target_include_directories(${LIB_DASHRPC} PUBLIC ${DASHRPC_INCLUDES})
 
 # LINK AGAINS DEPENDENCIES
 target_link_libraries(${LIB_DASHRPC} PRIVATE
-    ${LIBS_GRPC}
-    ${LIBS_PROTOBUF}
     ${LIBS_FMT}
-    ${LIBS_JSON}
+    ${LIBS_GRPC}
+    ${LIBS_NLOHMANN_JSON}
+    ${LIBS_OPENSSL}
+    ${LIBS_PROTOBUF}
+    ${LIBS_C_ARES}
+    ${LIBS_ABSEIL}
+    ${LIBS_RE2}
+    ${LIBS_ZLIB}
     ${LIB_DASHPROTOS})

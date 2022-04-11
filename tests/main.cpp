@@ -5,18 +5,5 @@
 
 TEST_CASE("TEXT TO JSON", "libdashrpc")
 {
-}
-
-TEST_CASE("GRPC LAYER 1", "libdashrpc")
-{
-    SECTION("METHOD 1")
-    {
-    }
-}
-
-TEST_CASE("GRPC LAYER 2", "libdashrpc")
-{
-    SECTION("METHOD 1")
-    {
-    }
+    dashrpc::platform::init();
 }
