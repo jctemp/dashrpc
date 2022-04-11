@@ -1,15 +1,20 @@
 [submodule "extern/grpc"]
 	path = extern/grpc
 	url = https://github.com/grpc/grpc
+	tag = v1.44.0
 [submodule "extern/fmt"]
 	path = extern/fmt
 	url = https://github.com/fmtlib/fmt.git
+	tag = 8.1.1
 [submodule "extern/json"]
 	path = extern/json
 	url = https://github.com/nlohmann/json.git
+	tag = 3.10.5
 [submodule "extern/Catch2"]
 	path = extern/Catch2
 	url = https://github.com/catchorg/Catch2.git
+	tag = 3.0.0-preview4
 [submodule "extern/platform"]
 	path = extern/platform
 	url = https://github.com/dashevo/platform.git
+	tag = v0.22.1
