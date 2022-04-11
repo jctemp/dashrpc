@@ -10,8 +10,8 @@ set(CMAKE_CXX_EXTENSIONS            OFF)
 
 
 # OPTIONS
-option(ENABLE_DASHRPC_TESTING    "Enable a Unit Testing build." OFF)
-option(ENABLE_DASHRPC_CONAN "Use conan for libraries rather then submodules" OFF)
+option(ENABLE_DASHRPC_TESTING    "Enable a Unit Testing build." ON)
+option(ENABLE_DASHRPC_CONAN "Use conan for libraries rather then submodules" ON)
 
 # SUBMODS OR CONAN
 if(ENABLE_DASHRPC_CONAN)
@@ -52,7 +52,7 @@ else()
                            grpcpp_channelz grpc++ grpc address_sorting gpr upb)
     set(LIBS_NLOHMANN_JSON nlohmann_json::nlohmann_json)
     set(LIBS_OPENSSL       dl pthread rt ssl crypto)
-    set(LIBS_PROTOBUF      pthread protoc protobuf)
+    set(LIBS_PROTOBUF      pthread protobuf)
     set(LIBS_C_ARES        rt cares)
     set(LIBS_ABSEIL        pthread m rt absl_scoped_set_env absl_strerror 
                            absl_failure_signal_handler absl_examine_stack
@@ -84,6 +84,8 @@ else()
                            absl_raw_logging_internal absl_log_severity)
     set(LIBS_RE2           m pthread re2)
     set(LIBS_ZLIB          z)
+
+    set(LIBS_DEPS_PROTOBUF protoc)
 endif()
 
 # REQUIRED
