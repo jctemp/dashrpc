@@ -3,7 +3,8 @@
 #include <dashrpc/dashrpc.hpp>
 
 
-TEST_CASE("TEXT TO JSON", "libdashrpc")
+TEST_CASE("dashrpc::platform::init", "[libdashrpc]")
 {
-    dashrpc::platform::init();
+    bool success = dashrpc::platform::init();
+    REQUIRE(success);
 }
