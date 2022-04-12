@@ -38,7 +38,7 @@ public:
     ~platform() = delete;
 
     struct connection;
-    static std::unique_ptr<connection> connection;
+    static std::unique_ptr<connection> conn;
 };
 
 } // namespace dashrpc

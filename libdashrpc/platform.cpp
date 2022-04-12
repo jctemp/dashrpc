@@ -22,18 +22,20 @@ struct platform::connection
     std::unique_ptr<Dash::Platform::Stub> stub;
 };
 
+std::unique_ptr<platform::connection> platform::conn{new platform::connection{}};
+
 bool platform::init(std::string address, uint16_t port)
 {
-    connection->channel = grpc::CreateChannel(fmt::format("{}:{}", address, port), grpc::InsecureChannelCredentials());
-    connection->stub = Dash::Platform::NewStub(connection->channel);
+    conn->channel = grpc::CreateChannel(fmt::format("{}:{}", address, port), grpc::InsecureChannelCredentials());
+    conn->stub = Dash::Platform::NewStub(conn->channel);
 
-    if (connection->channel == nullptr)
+    if (conn->channel == nullptr)
     {
         fmt::print(fmt::fg(fmt::color::red), "Failed to create channel\n");
         return false;
     }
 
-    if (connection->stub == nullptr)
+    if (conn->stub == nullptr)
     {
         fmt::print(fmt::fg(fmt::color::red), "Failed to create stub\n");
         return false;
@@ -76,7 +78,7 @@ int32_t platform::broadcast_state_transition(void)
 
     start = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
 
-    connection->stub->broadcastStateTransition(&ctx, stateReq, &stateRes);
+    conn->stub->broadcastStateTransition(&ctx, stateReq, &stateRes);
 
     end = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
 
@@ -94,7 +96,7 @@ int32_t platform::wait_for_state_transition_result(void)
 
     start = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
 
-    connection->stub->waitForStateTransitionResult(ctx, waitStateReq, &waitStateRes);
+    conn->stub->waitForStateTransitionResult(ctx, waitStateReq, &waitStateRes);
 
     end = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
 
@@ -132,7 +134,7 @@ int32_t platform::identity(void)
 
     start = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
 
-    connection->stub->getIdentity(&ctx, identityReq, &identityRes);
+    conn->stub->getIdentity(&ctx, identityReq, &identityRes);
 
     end = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
 
@@ -164,7 +166,7 @@ int32_t platform::data_contract(void)
 
     start = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
 
-    connection->stub->getDataContract(ctx, contractReq, &contractRes);
+    conn->stub->getDataContract(ctx, contractReq, &contractRes);
 
     end = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
 
@@ -196,7 +198,7 @@ int32_t platform::documents(void)
 
     start = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
 
-    connection->stub->getDocuments(&ctx, documentReq, &documentRes);
+    conn->stub->getDocuments(&ctx, documentReq, &documentRes);
 
     end = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
 
@@ -228,7 +230,7 @@ int32_t platform::identities_by_public_key_hashes(void)
 
     start = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
 
-    connection->stub->getIdentitiesByPublicKeyHashes(&ctx, identitiesReq, &identitiesRes);
+    conn->stub->getIdentitiesByPublicKeyHashes(&ctx, identitiesReq, &identitiesRes);
 
     end = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
 
@@ -271,7 +273,7 @@ int32_t platform::identity_ids_by_public_key_hashes(void)
 
     start = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
 
-    connection->stub->getIdentityIdsByPublicKeyHashes(&ctx, identityIdReq, &identityIdRes);
+    conn->stub->getIdentityIdsByPublicKeyHashes(&ctx, identityIdReq, &identityIdRes);
 
     end = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
 
@@ -313,7 +315,7 @@ int32_t platform::consensus_params(void)
 
     start = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
 
-    connection->stub->getConsensusParams(&ctx, consensusReq, &consensusRes);
+    conn->stub->getConsensusParams(&ctx, consensusReq, &consensusRes);
 
     end = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
 
