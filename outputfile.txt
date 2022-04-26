@@ -1,0 +1,83 @@
+--------START----------
+
+--- start init ---
+Connected to seed-1.testnet.networks.dash.org, 3010
+--- end init ---
+
+--- start transition ---
+start and end time objs created
+GRPC client context created
+Dash state transition request and response objects created
+Set default values for the start transition
+Set start time
+Sended Transition
+Set start time
+--- end transition ---
+
+--- start get_identity ---
+json obj created
+start and end time objs created
+GRPC client context created
+Dash get_identity request and response objects created
+Set default values for the get_identity
+Set start time
+Sended identity request
+Set end time
+## JSON ##
+	{"identity":"","metadata":{"coreChainLockedHeight":0,"height":0}}
+## JSON ##
+--- end get_identity ---
+
+--- start get_documents ---
+json obj created
+start and end time objs created
+GRPC client context created
+Dash get_documents request and response objects created
+Set default values for the get_documents
+Set start time
+Sended documents request
+Set end time
+## JSON ##
+	{"dataContract":[[]],"metadata":{"coreChainLockedHeight":0,"height":0}}
+## JSON ##
+--- end get_documents ---
+
+--- start get_identities_by_key_hashes ---
+json obj created
+start and end time objs created
+GRPC client context created
+Dash get_identities_by_key_hashes request and response objects created
+Set default values for the get_identities_by_key_hashes
+Set start time
+Sended identity request
+Set end time
+## JSON ##
+	{"identities":[[]],"metadata":{"coreChainLockedHeight":0,"height":0}}
+## JSON ##
+--- end get_identities_by_key_hashes ---
+
+--- start get_ids_by_key_hashes ---
+json obj created
+start and end time objs created
+GRPC client context created
+Dash get_ids_by_key_hashes request and response objects created
+Set default values for the get_ids_by_key_hashes
+Set start time
+Sended identity request
+Set end time
+## JSON ##
+	{"identityIds":[[]],"metadata":{"coreChainLockedHeight":0,"height":0}}
+## JSON ##
+--- end get_ids_by_key_hashes ---
+
+--- start consensus_param ---
+json obj created
+start and end time objs created
+GRPC client context created
+Dash consensus_param request and response objects created
+Set default values for the consensus_param
+Set start time
+Sended consensus request
+Set end time
+--- end consensus_param ---
+
