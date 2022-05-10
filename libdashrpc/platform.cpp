@@ -9,7 +9,7 @@
 
 #include <fmt/color.h>
 #include <fmt/core.h>
-#include <grpcpp/grpcpp.h>
+//#include <grpcpp/grpcpp.h>
 
 #include <proto/platform.grpc.pb.h>
 #include <proto/platform.pb.h>
@@ -101,7 +101,8 @@ int32_t platform::broadcast_state_transition(void) //test data working
     Dash::BroadcastStateTransitionResponse stateRes;
     debugPrint("Dash state transition request and response objects created\n");
 
-    stateReq.set_state_transition("pWR0eXBlAmlzaWduYXR1cmV4WEg3TWhFWDQ0Z3JzMVIwTE9XTU5IZjAxWFNpYVFQcUlVZ1JLRXQyMkxHVERsUlUrZ1BwQUlUZk5JUmhXd3IvYTVHd0lzWm1idGdYVVFxcVhjbW9lQWtUOD1qcHVibGljS2V5c4GkYmlkAGRkYXRheCxBdzh2UmYxeFFCTlVLbzNiY2llaHlaR2NhM0hBSThkY0ZvVWJTK3hLb0lITmR0eXBlAGlpc0VuYWJsZWT1bmxvY2tlZE91dFBvaW50eDBLT1VUSHB5YnFPek9DNnhEVUhFWm9uc1lNSVpqcGppTHFZNnkxYmlWNWxRQUFBQUFvcHJvdG9jb2xWZXJzaW9uAA==");
+    std::string state_transition_hash = "pWR0eXBlAmlzaWduYXR1cmV4WEg3TWhFWDQ0Z3JzMVIwTE9XTU5IZjAxWFNpYVFQcUlVZ1JLRXQyMkxHVERsUlUrZ1BwQUlUZk5JUmhXd3IvYTVHd0lzWm1idGdYVVFxcVhjbW9lQWtUOD1qcHVibGljS2V5c4GkYmlkAGRkYXRheCxBdzh2UmYxeFFCTlVLbzNiY2llaHlaR2NhM0hBSThkY0ZvVWJTK3hLb0lITmR0eXBlAGlpc0VuYWJsZWT1bmxvY2tlZE91dFBvaW50eDBLT1VUSHB5YnFPek9DNnhEVUhFWm9uc1lNSVpqcGppTHFZNnkxYmlWNWxRQUFBQUFvcHJvdG9jb2xWZXJzaW9uAA==";
+    stateReq.set_state_transition(state_transition_hash);
     debugPrint("Set default values for the start transition\n");
 
     start = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
@@ -118,27 +119,28 @@ int32_t platform::broadcast_state_transition(void) //test data working
     return 0;
 }
 
-int32_t platform::wait_for_state_transition_result(void)
+int32_t platform::wait_for_state_transition_result()
 {
     debugPrint("--- start wait_transition ---\n");
     nlohmann::json obj{};
     std::time_t start, end;
     debugPrint("json obj created\nstart and end time objs created\n");
 
-    grpc::ClientContext *ctx;
+    grpc::ClientContext ctx;
     debugPrint("GRPC client context created\n");
     Dash::WaitForStateTransitionResultRequest waitStateReq;
     Dash::WaitForStateTransitionResultResponse waitStateRes;
     debugPrint("Dash wait_transition request and response objects created\n");
     
-    waitStateReq.set_state_transition_hash("pWR0eXBlAmlzaWduYXR1cmV4WEg3TWhFWDQ0Z3JzMVIwTE9XTU5IZjAxWFNpYVFQcUlVZ1JLRXQyMkxHVERsUlUrZ1BwQUlUZk5JUmhXd3IvYTVHd0lzWm1idGdYVVFxcVhjbW9lQWtUOD1qcHVibGljS2V5c4GkYmlkAGRkYXRheCxBdzh2UmYxeFFCTlVLbzNiY2llaHlaR2NhM0hBSThkY0ZvVWJTK3hLb0lITmR0eXBlAGlpc0VuYWJsZWT1bmxvY2tlZE91dFBvaW50eDBLT1VUSHB5YnFPek9DNnhEVUhFWm9uc1lNSVpqcGppTHFZNnkxYmlWNWxRQUFBQUFvcHJvdG9jb2xWZXJzaW9uAA==");
-    waitStateReq.set_prove(false);
+    std::string state_transition_hash = "iuk7icJyRV886NAdupmjooyVUCYqYCxrpE3gjlRdOqk=";
+    waitStateReq.set_allocated_state_transition_hash(&state_transition_hash);
+    waitStateReq.set_state_transition_hash(state_transition_hash);
     debugPrint("Set default values for the wait_transition\n");
 
     start = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
     debugPrint("Set start time\n");
 
-    conn->stub->waitForStateTransitionResult(ctx, waitStateReq, &waitStateRes);
+    conn->stub->waitForStateTransitionResult(&ctx, waitStateReq, &waitStateRes);
     debugPrint("Sended wait_transition\n");
 
     end = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
@@ -236,7 +238,7 @@ int32_t platform::data_contract(void)
     debugPrint("Dash get_data_contract request and response objects created\n");
 
     contractReq.set_id("uNsY7l8uGhINKREVl5zk6/I22cHD0vD/HTdfhOGXhEk=");
-    contractReq.set_prove(true);
+    contractReq.set_prove(false);
     debugPrint("Set default values for the get_data_contract\n");
 
     start = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());

@@ -3,6 +3,8 @@
 #include <memory>
 #include <string>
 
+#include <grpcpp/grpcpp.h>
+
 namespace dashrpc
 {
 
